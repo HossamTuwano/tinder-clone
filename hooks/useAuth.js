@@ -73,7 +73,7 @@ export const AuthProvider = ({ children }) => {
 
   const memoedValue = useMemo(
     () => ({
-      user,
+      user: 'hossam',
       loading,
       error,
       signInWithGoogle,

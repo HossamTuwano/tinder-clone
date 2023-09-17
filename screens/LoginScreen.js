@@ -1,17 +1,18 @@
 import { View, Text, Button } from "react-native";
-import React from "react";
+import React, { useLayoutEffect, useEffect } from "react";
 import useAuth from "../hooks/useAuth";
 import { useNavigation } from "@react-navigation/native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const LoginScreen = () => {
   const { signInWithGoogle, loading } = useAuth();
-  const navigation = useNavigation(); 
-  
+  const navigation = useNavigation();
+
   return (
-    <View>
-      <Text>{loading ? 'Loading...' : 'Login To the App'}</Text>
+    <SafeAreaView>
+      <Text>{loading ? "Loading..." : "Login To the App"}</Text>
       <Button title="Login" onPress={signInWithGoogle} />
-    </View>
+    </SafeAreaView>
   );
 };
 
