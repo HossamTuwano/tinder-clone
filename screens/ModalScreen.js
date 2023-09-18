@@ -93,7 +93,10 @@ const ModalScreen = () => {
         <TouchableOpacity
           disabled={incompleteForm}
           onPress={updateUserProfile}
-          style={[tw`absolute -bottom-10 left-[35%]`]}
+          style={tw.style(
+            "absolute w-64 p-3 rounded-xl -bottom-30 left-[20%]",
+            incompleteForm ? tw`bg-gray-400` : tw`bg-red-400`
+          )}
         >
           <Text style={tw`text-center text-white text-xl`}>Update Profile</Text>
         </TouchableOpacity>
@@ -103,3 +106,7 @@ const ModalScreen = () => {
 };
 
 export default ModalScreen;
+
+const styles = {
+  here: {},
+};

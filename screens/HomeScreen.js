@@ -6,7 +6,7 @@ import {
   Image,
   StyleSheet,
 } from "react-native";
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import useAuth from "../hooks/useAuth";
 import tw from "twrnc";
@@ -45,7 +45,29 @@ const DUMMY_DATA = [
 const HomeScreen = () => {
   const navigation = useNavigation();
   const { user, logout } = useAuth();
+  const [profiles, setProfiles] = useState([]);
   const swipeRef = useRef(null);
+
+  // useEffect(() =>
+  //   onSnapshot(doc(db, "users", user.uid), (snapshot) => {
+  //     if (!snapshot.exists()) navigation.navigate("Modal");
+  //   })
+  // );
+
+  useEffect(() => {
+    let unsub;
+
+    const fetchCards = async () => {
+      unsub = onSnapshot(collection(db, "users"), (snapshot) => {
+        setProfiles(
+          snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }))
+        );
+      });
+    };
+  });
 
   return (
     <SafeAreaView style={tw`flex-1`}>
@@ -88,7 +110,7 @@ const HomeScreen = () => {
           cardIndex={0}
           animateCardOpacity
           verticalSwipe={false}
-          cards={DUMMY_DATA}
+          cards={[]}
           overlayLabels={{
             left: {
               title: "NOPE",
@@ -115,45 +137,51 @@ const HomeScreen = () => {
           onSwipedRight={() => {
             console.log("Swipe MATCH");
           }}
-          renderCard={(card) => (
-            <View key={card.id} style={tw`relative rounded-xl bg-white h-3/4 `}>
-              <Image
-                style={tw`absolute top-0 rounded-xl h-full w-full`}
-                source={{ uri: card.photoUrl }}
-              />
+          renderCard={(card) =>
+            card ? (
+              <View
+                key={card.id}
+                style={tw`relative rounded-xl bg-white h-3/4 `}
+              >
+                <Image
+                  style={tw`absolute top-0 rounded-xl h-full w-full`}
+                  source={{ uri: card.photoUrl }}
+                />
+                <View
+                  style={[
+                    tw`absolute bottom-0 justify-between justify-between py-2 rounded-b-xl px-6 items-center flex-row bg-white w-full h-20`,
+                    styles.cardShadow,
+                  ]}
+                >
+                  <View>
+                    <Text style={tw`text-xl font-bold`}>
+                      {card.firstName} {card.lastName}
+                    </Text>
+                    <Text>{card.job}</Text>
+                  </View>
+
+                  <Text style={tw`text-2xl font-bold`}>{card.age}</Text>
+                </View>
+              </View>
+            ) : (
               <View
                 style={[
-                  tw`absolute bottom-0 justify-between justify-between py-2 rounded-b-xl px-6 items-center flex-row bg-white w-full h-20`,
+                  tw`relative bg-white h-3/4 rounded-xl justify-center items-center`,
                   styles.cardShadow,
                 ]}
               >
-                <View>
-                  <Text style={tw`text-xl font-bold`}>
-                    {card.firstName} {card.lastName}
-                  </Text>
-                  <Text>{card.job}</Text>
-                </View>
-
-                <Text style={tw`text-2xl font-bold`}>{card.age}</Text>
+                <Text style={tw`font-bold pb-5`}>No more Profiles</Text>
+                <Image
+                  style={tw`h-20 w-full`}
+                  resizeMode="contain"
+                  height={50}
+                  width={50}
+                  source={{ uri: "https://links.papareact.com/6gb" }}
+                />
               </View>
-            </View>
-          )}
+            )
+          }
         />
-      </View>
-
-      <View style={tw`flex flex-row justify-evenly`}>
-        <TouchableOpacity
-          onPress={() => swipeRef.current.swipeLeft()}
-          style={tw`items-center justify-center rounded-full w-16 h-16 bg-red-200`}
-        >
-          <Entypo name="cross" size={24} color="red" />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => swipeRef.current.swipeRight()}
-          style={tw`items-center justify-center rounded-full w-16 h-16 bg-green-200`}
-        >
-          <AntDesign name="heart" size={24} color="green" />
-        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
