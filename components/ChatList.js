@@ -2,32 +2,33 @@ import { View, Text, FlatList } from "react-native";
 import React, { useEffect, useState } from "react";
 import tw from "twrnc";
 import useAuth from "../hooks/useAuth";
+import ChatRow from "./ChatRow";
 
 const ChatList = () => {
-  const [matches, setMatches] = useState([]);
+  const [matches, setMatches] = useState(["m"]);
   const { user } = useAuth();
 
-  useEffect(() => {
-    onSnapshot(
-      query(
-        collection(db, "matches"),
-        where("usersMatched", "array-contains", user.uid)
-      ),
-      (snapshot) =>
-        setMatches(
-          snapshot.docs.map((doc) => ({
-            id: doc.id,
-            ...doc.data(),
-          }))
-        )
-    );
-  }, [user]);
+  //   useEffect(() => {
+  //     onSnapshot(
+  //       query(
+  //         collection(db, "matches"),
+  //         where("usersMatched", "array-contains", user.uid)
+  //       ),
+  //       (snapshot) =>
+  //         setMatches(
+  //           snapshot.docs.map((doc) => ({
+  //             id: doc.id,
+  //             ...doc.data(),
+  //           }))
+  //         )
+  //     );
+  //   }, [user]);
 
   console.log(matches);
 
-  return matches.length > 0 ? (
+  return true ? (
     <FlatList
-      style={tw`flex-1`}
+      style={tw`h-full`}
       data={matches}
       keyExtractor={(item) => item.id}
       renderItem={({ item }) => <ChatRow matchDetails={item} />}
