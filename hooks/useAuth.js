@@ -13,18 +13,9 @@ import {
   signInWithCredential,
   signOut,
 } from "firebase/auth";
-import { auth } from "../firebase";
-
 // import { auth } from "../firebase";
 
 const AuthContext = createContext({});
-
-const config = {
-  androidClientId: process.env.ANDROID_CLIENT_ID,
-  iosClientId: process.env.IOS_CLIENT_ID,
-  scopes: ["profile", "email"],
-  permissions: ["public_profile", "email", "gender", "location"],
-};
 
 export const AuthProvider = ({ children }) => {
   const [error, setError] = useState(null);
@@ -32,20 +23,20 @@ export const AuthProvider = ({ children }) => {
   const [loadingInitial, setLoadingInitial] = useState(true);
   const [loading, setLoading] = useState(false);
 
-  useEffect(
-    () =>
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-          // Logged In
-          setUser(user);
-        } else {
-          // Not Logged In
-          setUser(null);
-        }
-        setLoadingInitial(false);
-      }),
-    []
-  );
+  // useEffect(
+  //   () =>
+  //     onAuthStateChanged(auth, (user) => {
+  //       if (user) {
+  //         // Logged In
+  //         setUser(user);
+  //       } else {
+  //         // Not Logged In
+  //         setUser([]);
+  //       }
+  //       setLoadingInitial(false);
+  //     }),
+  //   []
+  // );
 
   const logout = () => {
     setLoading(true);
@@ -55,37 +46,21 @@ export const AuthProvider = ({ children }) => {
       .finally(() => setLoading(false));
   };
   const signInWithGoogle = async () => {
-    setLoading(true);
-    await Google.loadAsync(config)
-      .then(async (loginResult) => {
-        if (loginResult.type === "success") {
-          const { idToken, accesToken } = loginResult;
-          const credential = GoogleAuthProvider.credential(idToken, accesToken);
-          await signInWithCredential(auth, credential);
-        }
-        return Promise.reject();
-      })
-      .catch(function (error) {
-        return setError(error);
-      })
-      .finally(() => setLoading(false));
+    setUser(user.push("hossam"));
   };
 
   const memoedValue = useMemo(
     () => ({
-      user: 'hossam',
-      loading,
-      error,
+      user: "hossam",
       signInWithGoogle,
       logout,
     }),
     [user, error, loading]
   );
 
+  console.log(user);
   return (
-    <AuthContext.Provider value={memoedValue}>
-      {!loadingInitial && children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={memoedValue}>{children}</AuthContext.Provider>
   );
 };
 

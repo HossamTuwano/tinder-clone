@@ -24,9 +24,14 @@ const ChatRow = ({ matchDetails }) => {
         })
       }
     >
-      <Image style={tw`rounded-full h-16 w-16 mr-4`} source={{ uri: "h" }} />
+      <Image
+        style={tw`rounded-full h-16 w-16 mr-4`}
+        source={{
+          uri: "https://avatars.githubusercontent.com/u/51116268?s=400&u=97168419edb7621855406b0b948e77150edcbfbf&v=4",
+        }}
+      />
       <View>
-        <Text style={tw`text-lg font-semibold`}>{""}</Text>
+        <Text style={tw`text-lg font-semibold`}>Hossam</Text>
         <Text>Say Hi!</Text>
       </View>
     </TouchableOpacity>

@@ -59,44 +59,6 @@ const HomeScreen = () => {
   const [profiles, setProfiles] = useState([]);
   const swipeRef = useRef(null);
 
-  // useEffect(() =>
-  //   onSnapshot(doc(db, "users", user.uid), (snapshot) => {
-  //     if (!snapshot.exists()) navigation.navigate("Modal");
-  //   })
-  // );
-
-  useEffect(() => {
-    let unsub;
-
-    const fetchCards = async () => {
-      const passes = await getDoc(
-        collection(db, "users", user.id, "passes")
-      ).then((snapshot) => snapshot.docs.map((doc) => doc.id));
-
-      const swipes = await getDoc(
-        collection(db, "users", user.uid, swipes)
-      ).then((snapshot) => snapshot.docs.map((doc) => doc.id));
-
-      const passedUserIds = passes.length > 0 ? passes : ["test"];
-      const swippedUserIds = swipes.length > 0 ? swipes : ["test"];
-
-      unsub = onSnapshot(
-        collection(db, "users"),
-        where("id", "not-in", [...passedUserIds, ...swippedUserIds]),
-        (snapshot) => {
-          setProfiles(
-            snapshot.docs
-              .filter((doc) => doc.id !== user.uid)
-              .map((doc) => ({
-                id: doc.id,
-                ...doc.data(),
-              }))
-          );
-        }
-      );
-    };
-  });
-
   const swipeLeft = async (cardIndex) => {
     if (!profiles[cardIndex]) return;
 
@@ -138,7 +100,8 @@ const HomeScreen = () => {
           });
 
           navigation.navigate("Match", {
-            loggedInProfile, userSwiped
+            loggedInProfile,
+            userSwiped,
           });
         } else {
           console.log(
@@ -161,7 +124,7 @@ const HomeScreen = () => {
           <Image
             style={tw`rounded-full h-10 w-10`}
             source={{
-              uri: "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg",
+              uri: "https://avatars.githubusercontent.com/u/51116268?s=400&u=97168419edb7621855406b0b948e77150edcbfbf&v=4",
             }}
           />
         </TouchableOpacity>
@@ -194,7 +157,7 @@ const HomeScreen = () => {
           cardIndex={0}
           animateCardOpacity
           verticalSwipe={false}
-          cards={[]}
+          cards={DUMMY_DATA}
           overlayLabels={{
             left: {
               title: "NOPE",

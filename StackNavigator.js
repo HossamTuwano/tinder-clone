@@ -22,12 +22,12 @@ const StackNavigator = () => {
             <Stack.Screen name="Chat" component={ChatScreen} />
             <Stack.Screen name="Message" component={MessageScreen} />
           </Stack.Group>
-          {/* <Stack.Group screenOptions={{ presentation: "modal" }}>
+          <Stack.Group screenOptions={{ presentation: "modal" }}>
             <Stack.Screen name="Modal" component={ModalScreen} />
-          </Stack.Group> */}
-          {/* <Stack.Group screenOptions={{ presentation: "transparentModel" }}>
+          </Stack.Group>
+          <Stack.Group screenOptions={{ presentation: "transparentModel" }}>
             <Stack.Screen name="Match" component={MatchedScreen} />
-          </Stack.Group> */}
+          </Stack.Group>
         </>
       ) : (
         <Stack.Screen name="Login" component={LoginScreen} />
