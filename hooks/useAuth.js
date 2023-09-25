@@ -45,20 +45,34 @@ export const AuthProvider = ({ children }) => {
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
   };
-  const signInWithGoogle = async () => {
-    setUser(user.push("hossam"));
+  const signInWithGoogle = () => {
+    // try {
+    fetch("http://10.0.2.2:5272/api/UsersContoller", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: {
+        name: "nana mwangaza",
+        age: "23",
+        gender: "female",
+        occupation: "software developer",
+      },
+    })
+      .then((response) => console.log(response.json))
+      .catch((error) => console.log(error));
   };
 
   const memoedValue = useMemo(
     () => ({
-      user: "hossam",
+      user,
       signInWithGoogle,
       logout,
     }),
     [user, error, loading]
   );
 
-  console.log(user);
   return (
     <AuthContext.Provider value={memoedValue}>{children}</AuthContext.Provider>
   );

@@ -26,7 +26,12 @@
       },
       "package": "host.exp.exponent"
     },
-    "plugins": ["@react-native-google-signin/google-signin"],
+    "plugins": [
+      [
+        "@react-native-google-signin/google-signin",
+        "expo-updates"
+      ]
+    ],
     "web": {
       "favicon": "./assets/favicon.png"
     },
@@ -34,6 +39,12 @@
       "eas": {
         "projectId": "922fa6f4-4a0c-43bd-858c-4e30c5efc78b"
       }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/922fa6f4-4a0c-43bd-858c-4e30c5efc78b"
     }
   }
 }

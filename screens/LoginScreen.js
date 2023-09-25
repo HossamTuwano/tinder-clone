@@ -15,7 +15,7 @@ const LoginScreen = () => {
         <Text style={tw`text-center mb-3`}>
           {loading ? "Loading..." : "Click login to continue"}
         </Text>
-        <Button title="Login" onPress={() => navigation.navigate("Home")} />
+        <Button title="Login" onPress={signInWithGoogle} />
       </View>
     </SafeAreaView>
   );
